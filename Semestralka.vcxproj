@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{1461406d-390b-45c4-8679-1cde7edaeeda}</ProjectGuid>
+    <RootNamespace>Semestralka</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="handler.cpp" />
+    <ClCompile Include="Semestralka.cpp" />
+    <ClCompile Include="structures\structure.cpp" />
+    <ClCompile Include="structures\utils.cpp" />
+    <ClCompile Include="structures\vector\vector.cpp" />
+    <ClCompile Include="vypisovac.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="filter\filterAnd.h" />
+    <ClInclude Include="filter\filterOr.h" />
+    <ClInclude Include="filter\filterPrislusnost.h" />
+    <ClInclude Include="filter\filterUJNazov.h" />
+    <ClInclude Include="filter\filterUJTyp.h" />
+    <ClInclude Include="filter\FilterUJVzdelaniePodiel.h" />
+    <ClInclude Include="filter\filterSKriteriom.h" />
+    <ClInclude Include="filter\filterHodnota.h" />
+    <ClInclude Include="filter\filterInterval.h" />
+    <ClInclude Include="filter\filter.h" />
+    <ClInclude Include="filter\FilterUJVzdelaniePocet.h" />
+    <ClInclude Include="filter\zlozenyFilter.h" />
+    <ClInclude Include="handler.h" />
+    <ClInclude Include="kriterium\kriteriumUJPrislusnost.h" />
+    <ClInclude Include="kriterium\kriteriumUJNazov.h" />
+    <ClInclude Include="kriterium\kriteriumUJTyp.h" />
+    <ClInclude Include="kriterium\kriteriumUJVzdelaniePocet.h" />
+    <ClInclude Include="kriterium\kriteriumUJVzdelaniePodiel.h" />
+    <ClInclude Include="structures\array\array.h" />
+    <ClInclude Include="structures\data_item.h" />
+    <ClInclude Include="structures\heap_monitor.h" />
+    <ClInclude Include="kriterium\kriterium.h" />
+    <ClInclude Include="kriterium\kriteriumUJ.h" />
+    <ClInclude Include="structures\list\array_list.h" />
+    <ClInclude Include="structures\list\double_linked_list.h" />
+    <ClInclude Include="structures\list\linked_list.h" />
+    <ClInclude Include="structures\list\list.h" />
+    <ClInclude Include="structures\matrix\coherent_matrix.h" />
+    <ClInclude Include="structures\matrix\incoherent_matrix.h" />
+    <ClInclude Include="structures\matrix\matrix.h" />
+    <ClInclude Include="structures\priority_queue\heap.h" />
+    <ClInclude Include="structures\priority_queue\priority_queue.h" />
+    <ClInclude Include="structures\priority_queue\priority_queue_limited_sorted_array_list.h" />
+    <ClInclude Include="structures\priority_queue\priority_queue_linked_list.h" />
+    <ClInclude Include="structures\priority_queue\priority_queue_list.h" />
+    <ClInclude Include="structures\priority_queue\priority_queue_sorted_array_list.h" />
+    <ClInclude Include="structures\priority_queue\priority_queue_two_lists.h" />
+    <ClInclude Include="structures\priority_queue\priority_queue_unsorted_array_list.h" />
+    <ClInclude Include="structures\queue\explicit_queue.h" />
+    <ClInclude Include="structures\queue\implicit_queue.h" />
+    <ClInclude Include="structures\queue\queue.h" />
+    <ClInclude Include="structures\stack\explicit_stack.h" />
+    <ClInclude Include="structures\stack\implicit_stack.h" />
+    <ClInclude Include="structures\stack\stack.h" />
+    <ClInclude Include="structures\structure.h" />
+    <ClInclude Include="structures\structure_iterator.h" />
+    <ClInclude Include="structures\table\binary_search_tree.h" />
+    <ClInclude Include="structures\table\linked_table.h" />
+    <ClInclude Include="structures\table\sequence_table.h" />
+    <ClInclude Include="structures\table\sorted_sequence_table.h" />
+    <ClInclude Include="triedenie\quick_sortUJ.h" />
+    <ClInclude Include="structures\table\sorting\sort.h" />
+    <ClInclude Include="structures\table\table.h" />
+    <ClInclude Include="structures\table\unsorted_sequence_table.h" />
+    <ClInclude Include="structures\tree\binary_tree.h" />
+    <ClInclude Include="structures\tree\k_way_tree.h" />
+    <ClInclude Include="structures\tree\multi_way_tree.h" />
+    <ClInclude Include="structures\tree\tree.h" />
+    <ClInclude Include="structures\types.h" />
+    <ClInclude Include="structures\utils.h" />
+    <ClInclude Include="structures\vector\vector.h" />
+    <ClInclude Include="triedenie\triedenie.h" />
+    <ClInclude Include="loader.h" />
+    <ClInclude Include="uzemnaJednotka\typUzemnaJednotka.h" />
+    <ClInclude Include="uzemnaJednotka\uzemnaJednotka.h" />
+    <ClInclude Include="vypisovac.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
