@@ -11,10 +11,13 @@
 #include "filter/filterUJTyp.h"
 #include "filter/FilterUJVzdelaniePocet.h"
 #include "filter/FilterUJVzdelaniePodiel.h"
+#include "filter/filterUJVekovaSkupinaPocet.h"
+#include "filter/filterUJVekovaSkupinaPodiel.h"
 #include "structures/table/sorted_sequence_table.h"
 #include "uzemnaJednotka/uzemnaJednotka.h"
 #include "triedenie/triedenie.h"
 #include "structures/table/unsorted_sequence_table.h"
+#include "structures/heap_monitor.h"
 
 
 
@@ -27,7 +30,6 @@ void Handler::spusti()
 	structures::SortedSequenceTable<string, UzemnaJednotka*> tableData;
 	structures::SortedSequenceTable<string, string> kodovanie;
 	loader.nacitaj(tableData, kodovanie);
-
 	bool koniec{ false };
 
 	while (!koniec)
@@ -35,6 +37,8 @@ void Handler::spusti()
 		vypisovac.vypisVsetkyOperacie();
 		string operacia;
 		getline(cin, operacia);
+
+		//Bodove Vyhladvanie
 		if (operacia == "0")
 		{
 			string kod;
@@ -70,22 +74,25 @@ void Handler::spusti()
 			if (spat)
 				continue;
 			UzemnaJednotka* uzemnaJednotka = tableData.find(kod);
-			vypisovac.vypisBodoveUJ(uzemnaJednotka, true, false);
+			vypisovac.vypisBodoveUJ(uzemnaJednotka);
 		}
+
 		else if (operacia == "1")
 		{
-			bool aplivakonyVzPodiel{};
 			bool aplikovanyVzPocet{};
+			bool aplikovanyVzPodiel{};
+			bool aplikovanaEVSPocet{};
+			bool aplikovanyEVSPodiel{};
 
 			cout << "\nPouzit filtre?\n"
-				<< "\t0 pre Nie\n"
-				<< "\t1 pre Ano\n"
-				<< "\tine pre NASPAT\n";
+				<< "\t0: pre Nie\n"
+				<< "\t1: pre Ano\n"
+				<< "\tine: pre NASPAT\n";
 			getline(cin, operacia);
 			if (operacia == "0")
 			{
 				for (auto element : tableData) {
-					vypisovac.vypisBodoveUJ(element->accessData(), false, false);
+					vypisovac.vypisFilterUJBezFiltra(element->accessData());
 				}
 				continue;
 			}
@@ -95,8 +102,8 @@ void Handler::spusti()
 			}
 
 			std::cout << "\nS akou logickou operaciou zacat?\n"
-				<< "\t0 AND\n"
-				<< "\t1 OR\n";
+				<< "\t0: AND\n"
+				<< "\t1: OR\n";
 			getline(std::cin, operacia);
 			ZlozenyFilter<UzemnaJednotka*>* filter;
 			if (operacia == "0")
@@ -116,6 +123,8 @@ void Handler::spusti()
 			bool fkoniec{};
 			int ivzdelanie{};
 			int dvzdelanie{};
+			int ievs{};
+			int devs{};
 			while (!fkoniec) {
 				vypisovac.vypisCisloVsetkyFiltre();
 				getline(cin, operacia);
@@ -125,10 +134,10 @@ void Handler::spusti()
 					string meno;
 					string kod;
 					while (true) {
-						cout << "\nZadaj nazov UJ Alebo napis 1 pre vypis vsetkeho: ";
+						cout << "\nZadaj nazov UJ Alebo napis 1 pre vypis vsetkych nazvov: ";
 						getline(std::cin, meno);
 						if (meno == "1") {
-							vypisovac.vypisCeluTabulku(tableData);
+							vypisovac.vypisVsetkyNazvy(tableData);
 						}
 						else
 						{
@@ -153,7 +162,6 @@ void Handler::spusti()
 				}
 				else if (operacia == "2")
 				{
-
 					string meno;
 					string kod;
 					bool najdene;
@@ -175,8 +183,8 @@ void Handler::spusti()
 					std::string vzdelanie;
 					std::string min{};
 					std::string max{};
-					int imin;
-					int imax;
+					int imin{};
+					int imax{};
 
 					vypisovac.vypisCisloVzdelania();
 					getline(std::cin, vzdelanie);
@@ -194,10 +202,10 @@ void Handler::spusti()
 				else if (operacia == "4")
 				{
 					std::string vzdelanie;
-					std::string min{};
-					std::string max{};
-					double dmin;
-					double dmax;
+					std::string min;
+					std::string max;
+					double dmin{};
+					double dmax{};
 					vypisovac.vypisCisloVzdelania();
 					getline(std::cin, vzdelanie);
 					std::cout << "Vyber dolnu hranicu intervalu: ";
@@ -206,28 +214,62 @@ void Handler::spusti()
 					getline(std::cin, max);
 					vypisovac.vyhodnotParametreVzdelaniePodiel(vzdelanie, min, max,
 						dvzdelanie, dmin, dmax);
-					aplivakonyVzPodiel = true;
+					aplikovanyVzPodiel = true;
 					filter->addFilter(new FilterUJVzdelaniePodiel(static_cast<Vzdelanie>(dvzdelanie),
 						dmin, dmax));
 				}
-
 				else if (operacia == "5")
 				{
-					auto pomFilter(filter);
-					auto newFilter = new Filter_OR<UzemnaJednotka*>;
-					newFilter->addFilter(pomFilter);
-					//delete filter;
-					filter = newFilter;
+					std::string evs;
+					std::string min;
+					std::string max;
+					int imin{};
+					int imax{};
+					vypisovac.vypisCisloEVS();
+					getline(std::cin, evs);
+					std::cout << "Vyber dolnu hranicu intervalu: ";
+					getline(std::cin, min);
+					std::cout << "Vyber hornu hranicu intervalu: ";
+					getline(std::cin, max);
+					vypisovac.vyhodnotParametreEVSPocet(evs, min, max,
+						ievs, imin, imax);
+					aplikovanaEVSPocet = true;
+					filter->addFilter(new FilterUJVekovaSkupinaPocet(static_cast<EVS>(ievs),
+						imin, imax));
 				}
 				else if (operacia == "6")
 				{
-					auto pomFilter(filter);
-					auto newFilter = new Filter_AND<UzemnaJednotka*>;
-					newFilter->addFilter(pomFilter);
-					//delete filter;
+					std::string evs;
+					std::string min;
+					std::string max;
+					double dmin{};
+					double dmax{};
+					vypisovac.vypisCisloEVS();
+					getline(std::cin, evs);
+					std::cout << "Vyber dolnu hranicu intervalu: ";
+					getline(std::cin, min);
+					std::cout << "Vyber hornu hranicu intervalu: ";
+					getline(std::cin, max);
+					vypisovac.vyhodnotParametreEVSPodiel(evs, min, max,
+						devs, dmin, dmax);
+					aplikovanyEVSPodiel = true;
+					filter->addFilter(new FilterUJVekovaSkupinaPodiel(static_cast<EVS>(devs),
+						dmin, dmax));
+				}
+
+				else if (operacia == "7")
+				{
+					auto newFilter = new Filter_OR<UzemnaJednotka*>;
+					newFilter->addFilter(filter);
 					filter = newFilter;
 				}
-				else if (operacia == "7")
+				else if (operacia == "8")
+				{
+					auto newFilter = new Filter_AND<UzemnaJednotka*>;
+					newFilter->addFilter(filter);
+					filter = newFilter;
+				}
+				else if (operacia == "9")
 				{
 					if (filter->size() == 0)
 					{
@@ -242,33 +284,43 @@ void Handler::spusti()
 					std::cout << "Zly vstup!";
 				}
 			}
+
 			structures::UnsortedSequenceTable<std::string, UzemnaJednotka*> novaDataTab;
 			filter->vyfiltruj(tableData, novaDataTab);
 
 			for (auto element : novaDataTab) {
-
-				vypisovac.vypisFilterUJ(element->accessData(),
-					aplikovanyVzPocet, aplivakonyVzPodiel,
-					static_cast<Vzdelanie>(ivzdelanie), static_cast<Vzdelanie>(dvzdelanie));
+				auto uj = element->accessData();
+				vypisovac.vypisNazovATyp(uj, true);
+				if (aplikovanyVzPocet)
+					vypisovac.vypisFilterUJVzPocet(uj, static_cast<Vzdelanie>(ivzdelanie));
+				if (aplikovanyVzPodiel)
+					vypisovac.vypisFilterUJVzPodiel(uj, static_cast<Vzdelanie>(dvzdelanie));
+				if (aplikovanaEVSPocet)
+					vypisovac.vypisFilterUJEVSPocet(uj, static_cast<EVS>(ievs));
+				if (aplikovanyEVSPodiel)
+					vypisovac.vypisFilterUJEVSPodiel(uj, static_cast<EVS>(devs));
+				vypisovac.vypisNadradeneUJ(uj,true);
 			}
 			if (novaDataTab.size() == 0)
 			{
 				cout << "Filtrom nevyhovuje ziadna UJ\n";
 			}
-			//delete filter;
-			//filter = nullptr;
+			delete filter;
+
 
 		}
 		else if (operacia == "2")
 		{
 			cout << "\tZacat triedit?\n";
 			cout << "\t0: pre Spat\n";
-			cout << "\tine pre Dalej\n";
+			cout << "\tine: pre Dalej\n";
 			getline(cin, operacia);
 			if (operacia == "0")
 				continue;
 			bool fkoniec{};
 			Filter_AND<UzemnaJednotka*> triedenieFilter;
+			bool vybrateTyp{};
+			bool vybratePrislusnost{};
 			while (!fkoniec) {
 				cout << "Spolocne Filtre:\n"
 					<< "\t0: Vyber FilterTyp\n"
@@ -281,6 +333,7 @@ void Handler::spusti()
 					vypisovac.vypisTypyUJ();
 					getline(cin, operacia);
 					TypUzemnaJednotka typ = vypisovac.stringToTyp(operacia);
+					vybrateTyp = true;
 					triedenieFilter.addFilter(new FilterUJTyp(typ));
 				}
 				else if (operacia == "1")
@@ -291,6 +344,7 @@ void Handler::spusti()
 					cout << "\nZadaj nazov nadradenej UJ: ";
 					getline(std::cin, meno);
 					najdene = kodovanie.tryFind(meno, kod);
+					vybratePrislusnost = true;
 					if (najdene)
 					{
 						triedenieFilter.addFilter(new FilterPrislusnost(tableData.find(kod)));
@@ -308,9 +362,11 @@ void Handler::spusti()
 			}
 			cout << "\t0: Tried podla nazvu\n"
 				<< "\t1: Vyber FilterPocet a utried\n"
-				<< "\t2: Vyber FilterPodiel a utried\n";
+				<< "\t2: Vyber FilterPodiel a utried\n"
+				<< "\t3: Vyber FilterVekovaSkupinaPocet a utried\n";
 			getline(cin, operacia);
 			int ivzdelanie{};
+			int ievs{};
 			if (operacia == "1")
 			{
 				std::string vzdelanie;
@@ -348,6 +404,24 @@ void Handler::spusti()
 				triedenieFilter.addFilter(new FilterUJVzdelaniePodiel(static_cast<Vzdelanie>(ivzdelanie),
 					dmin, dmax));
 			}
+			else if (operacia == "3")
+			{
+				std::string evs;
+					std::string min;
+					std::string max;
+					int imin{};
+					int imax{};
+					vypisovac.vypisCisloEVS();
+					getline(std::cin, evs);
+					std::cout << "Vyber dolnu hranicu intervalu: ";
+					getline(std::cin, min);
+					std::cout << "Vyber hornu hranicu intervalu: ";
+					getline(std::cin, max);
+					vypisovac.vyhodnotParametreEVSPocet(evs, min, max,
+						ievs, imin, imax);
+					triedenieFilter.addFilter(new FilterUJVekovaSkupinaPocet(static_cast<EVS>(ievs),
+						imin, imax));
+			}
 			else if (operacia != "0")
 			{
 				cout << "Nevybral si ziadnu z moznosti, budem triedit podla nazvu\n";
@@ -364,9 +438,7 @@ void Handler::spusti()
 			KriteriumUJNazov kn;
 			if (operacia == "1")
 			{
-				cout << "Triedit\n"
-					<< "0: pre zostupne\n"
-					<< "1: pre vzostupne\n\n";
+				vypisovac.trieditAko();
 				getline(cin, operacia);
 				Triedenie<std::string, UzemnaJednotka*, int> triedenie;
 				auto vzdelanie = static_cast<Vzdelanie>(ivzdelanie);
@@ -384,16 +456,17 @@ void Handler::spusti()
 				}
 				for (auto element : novaDataTab)
 				{
-					cout << kn.ohodnot(element->accessData()) << "-";
-					vypisovac.vypisKonkretneVzdelanie(element->accessData(), true, false, vzdelanie, vzdelanie);
+					auto uj = element->accessData();
+					vypisovac.vypisNazovATyp(uj, vybrateTyp);
+					vypisovac.vypisFilterUJVzPocet(uj, vzdelanie);
+					if (vybratePrislusnost)
+						vypisovac.vypisNadradeneUJ(uj,vybrateTyp);
 
 				}
 			}
 			else if (operacia == "2")
 			{
-				cout << "Triedit\n"
-					<< "0: pre zostupne\n"
-					<< "1: pre vzostupne\n\n";
+				vypisovac.trieditAko();
 				getline(cin, operacia);
 				Triedenie<std::string, UzemnaJednotka*, double> triedenie;
 				auto vzdelanie = static_cast<Vzdelanie>(ivzdelanie);
@@ -411,16 +484,44 @@ void Handler::spusti()
 				}
 				for (auto element : novaDataTab)
 				{
-					cout << kn.ohodnot(element->accessData()) << "-";
-					vypisovac.vypisKonkretneVzdelanie(element->accessData(), false, true, vzdelanie, vzdelanie);
-
+					auto uj = element->accessData();
+					vypisovac.vypisNazovATyp(uj, vybrateTyp);
+					vypisovac.vypisFilterUJVzPodiel(uj, vzdelanie);
+					if (vybratePrislusnost)
+						vypisovac.vypisNadradeneUJ(uj,vybrateTyp);
+				}
+			}
+			else if (operacia == "3")
+			{
+				vypisovac.trieditAko();
+				getline(cin, operacia);
+				Triedenie<std::string, UzemnaJednotka*, int> triedenie;
+				auto evs = static_cast<EVS>(ievs);
+				
+				KriteriumVekovaSkupinaPocet kp(evs);
+				if (operacia == "0") {
+					triedenie.utried(novaDataTab, kp, false);
+				}
+				else if (operacia == "1") {
+					triedenie.utried(novaDataTab, kp, true);
+				}
+				else
+				{
+					cout << "Zly vstup, triedim vzostupne\n";
+					triedenie.utried(novaDataTab, kp, true);
+				}
+				for (auto element : novaDataTab)
+				{
+					auto uj = element->accessData();
+					vypisovac.vypisNazovATyp(uj, vybrateTyp);
+					vypisovac.vypisFilterUJEVSPocet(uj,evs);
+					if (vybratePrislusnost)
+						vypisovac.vypisNadradeneUJ(uj,vybrateTyp);
 				}
 			}
 			else
 			{
-				cout << "Triedit\n"
-					<< "0: pre zostupne\n"
-					<< "1: pre vzostupne\n\n";
+				vypisovac.trieditAko();
 				getline(cin, operacia);
 				Triedenie<std::string, UzemnaJednotka*, std::string> triedenie;
 				if (operacia == "0") {
@@ -436,11 +537,12 @@ void Handler::spusti()
 				}
 				for (auto element : novaDataTab)
 				{
-					cout << kn.ohodnot(element->accessData()) << '\n';
+					auto uj = element->accessData();
+					vypisovac.vypisNazovATyp(uj, vybrateTyp);
+					if (vybratePrislusnost)
+						vypisovac.vypisNadradeneUJ(uj,vybrateTyp);
 				}
 			}
-			//delete filter;
-			//filter = nullptr;
 		}
 
 		else if (operacia == "3")
@@ -450,4 +552,10 @@ void Handler::spusti()
 			break;
 		}
 	}
+
+	for (auto element : tableData)
+	{
+		delete element->accessData();
+	}
+
 }

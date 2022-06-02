@@ -20,7 +20,7 @@ inline void Loader::nacitaj(
 	structures::SortedSequenceTable<string, UzemnaJednotka*>& table,
 	structures::SortedSequenceTable<string, string>& kodovanie)
 {
-
+	
 
 	string kod ="SK";
 	string nazov = "Slovensko";
@@ -35,11 +35,11 @@ inline void Loader::nacitaj(
 
 	if (!fileKraje)
 	{
-		std::cerr << "Nepodarilo sa otvorit kraje.csv subor";
-		return;
+		fileKraje.close();
+		throw std::runtime_error("Nepodarilo sa otvorit kraje.csv subor");
 	}
 	std::cout << "Nacitavanie kraje.csv...\n";
-
+	getline(fileKraje,riadok); // prvy riadok s popismy
 	while (getline(fileKraje, riadok))
 	{
 		std::stringstream ss{ riadok };
@@ -60,15 +60,16 @@ inline void Loader::nacitaj(
 		table.insert(kod, kraj);
 		kodovanie.insert(nazov,kod);
 	}
+	fileKraje.close();
 
 	std::ifstream fileOkresy{ "okresy.csv",std::ios::in };
 	if (!fileOkresy)
 	{
-		std::cerr << "Nepodarilo sa otvorit okresy.csv subor";
-		return;
+		fileOkresy.close();
+		throw std::runtime_error("Nepodarilo sa otvorit okresy.csv subor");
 	}
 	std::cout << "Nacitavanie okresy.csv...\n";
-
+	getline(fileOkresy,riadok);  // prvy riadok s popismy
 	while (getline(fileOkresy, riadok))
 	{
 		std::stringstream ss{ riadok };
@@ -101,6 +102,8 @@ inline void Loader::nacitaj(
 		}
 
 	}
+	fileOkresy.close();
+
 	structures::SortedSequenceTable<std::string,UzemnaJednotka*> pomTab(table);
 
 	std::ifstream fileObce{ "obce.csv",std::ios::in };
@@ -108,13 +111,13 @@ inline void Loader::nacitaj(
 
 	if (!fileObce)
 	{
-		std::cerr << "Nepodarilo sa otvorit obce.csv subor";
-		return;
+		fileObce.close();
+		throw std::runtime_error("Nepodarilo sa otvorit obce.csv subor");
 	}
 	std::cout << "Nacitavanie obce.csv...\n";
 
-
-	while (getline(fileObce, riadok))
+	getline(fileObce,riadok);  // prvy riadok s popismy
+	while (getline(fileObce, riadok)) //kym nie je koniec file
 	{
 		std::stringstream ss{ riadok };
 		string stlpec;
@@ -145,7 +148,7 @@ inline void Loader::nacitaj(
 			}
 		}
 	}
-
+	fileObce.close();
 
 
 	std::ifstream fileVzdelanie{ "vzdelanie.csv",std::ios::in };
@@ -153,16 +156,16 @@ inline void Loader::nacitaj(
 
 	if (!fileVzdelanie)
 	{
-		std::cerr << "Nepodarilo sa otvorit vzdelanie.csv subor";
-		return;
+		fileVzdelanie.close();
+		throw std::runtime_error("Nepodarilo sa otvorit vzdelanie.csv subor");
 	}
 	std::cout << "Nacitavanie vzdelanie.csv...\n";
 
-
-	while (getline(fileVzdelanie, riadok))
+	getline(fileVzdelanie,riadok);  // prvy riadok s popismy
+	while (getline(fileVzdelanie, riadok)) //kym nie je koniec file
 	{
 		std::stringstream ss{ riadok };
-		std::getline(ss, riadok, ';');
+		std::getline(ss, riadok, ';'); //kod
 
 		auto kodObec{ riadok };
 		auto obec{ table.find(kodObec) };
@@ -173,9 +176,9 @@ inline void Loader::nacitaj(
 		auto kodKraj{ kodOkres.substr(0,5) };
 		auto kraj{ table.find(kodKraj) };
 
-		std::getline(ss, riadok, ';');
+		std::getline(ss, riadok, ';'); //nazov - naprazdno
 		for (int i{}; i < 9; i++) {
-			std::getline(ss, riadok, ';');
+			std::getline(ss, riadok, ';'); //vzdelania
 			switch (i)
 			{
 			case bez_ukonceneho_vzdelania:
@@ -231,12 +234,100 @@ inline void Loader::nacitaj(
 			}
 		}
 	}
+	fileVzdelanie.close();
+
+	
 
 
-	fileObce.close();
-	fileOkresy.close();
-	fileKraje.close();
+	std::ifstream fileVek{ "vek.csv",std::ios::in };
 
+
+	if (!fileVek)
+	{
+		fileVek.close();
+		throw std::runtime_error("Nepodarilo sa otvorit vek.csv subor");
+	}
+	std::cout << "Nacitavanie vek.csv...\n";
+
+	getline(fileVek,riadok);  // prvy riadok s popismy
+	while (getline(fileVek, riadok)) //kym nie je koniec file
+	{
+		std::stringstream ss{ riadok };
+		std::getline(ss, riadok, ';'); //kod
+
+		auto kodObec{ riadok };
+		auto obec{ table.find(kodObec) };
+
+		auto kodOkres{ kodObec.substr(0,6) };
+		auto okres{ table.find(kodOkres) };
+
+		auto kodKraj{ kodOkres.substr(0,5) };
+		auto kraj{ table.find(kodKraj) };
+
+		int spolu{};
+		std::getline(ss, riadok, ';'); //nazov - naprazdno
+		for (int i{}; i < 15; i++) {
+			std::getline(ss, riadok, ';');
+			spolu += std::stoi(riadok);
+		}
+		obec->pridajEVS(spolu,predproduktivni);
+		okres->pridajEVS(spolu,predproduktivni);
+		kraj->pridajEVS(spolu,predproduktivni);
+		slovensko->pridajEVS(spolu,predproduktivni);
+		spolu = 0;
+
+		for (int i{}; i < 50; i++) {
+			std::getline(ss, riadok, ';');
+			spolu += std::stoi(riadok);
+		}
+		obec->pridajEVS(spolu,produktivni);
+		okres->pridajEVS(spolu,produktivni);
+		kraj->pridajEVS(spolu,produktivni);
+		slovensko->pridajEVS(spolu,produktivni);
+		spolu = 0;
+
+		for (int i{}; i < 36; i++) {
+			std::getline(ss, riadok, ';');
+			spolu += std::stoi(riadok);
+		}
+		obec->pridajEVS(spolu,poproduktivni);
+		okres->pridajEVS(spolu,poproduktivni);
+		kraj->pridajEVS(spolu,poproduktivni);
+		slovensko->pridajEVS(spolu,poproduktivni);
+		spolu = 0;
+
+		for (int i{}; i < 15; i++) {
+			std::getline(ss, riadok, ';');
+			spolu += std::stoi(riadok);
+		}
+		obec->pridajEVS(spolu,predproduktivni);
+		okres->pridajEVS(spolu,predproduktivni);
+		kraj->pridajEVS(spolu,predproduktivni);
+		slovensko->pridajEVS(spolu,predproduktivni);
+		spolu = 0;
+
+		for (int i{}; i < 50; i++) {
+			std::getline(ss, riadok, ';');
+			spolu += std::stoi(riadok);
+		}
+		obec->pridajEVS(spolu,produktivni);
+		okres->pridajEVS(spolu,produktivni);
+		kraj->pridajEVS(spolu,produktivni);
+		slovensko->pridajEVS(spolu,produktivni);
+		spolu = 0;
+
+		for (int i{}; i < 36; i++) {
+			std::getline(ss, riadok, ';');
+			spolu += std::stoi(riadok);
+		}
+		obec->pridajEVS(spolu,poproduktivni);
+		okres->pridajEVS(spolu,poproduktivni);
+		kraj->pridajEVS(spolu,poproduktivni);
+		slovensko->pridajEVS(spolu,poproduktivni);
+		spolu = 0;
+	}
+	
+	fileVek.close();
 
 
 }

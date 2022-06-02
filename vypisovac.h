@@ -9,27 +9,48 @@
 class Vypisovac
 {
 public:
-	TypUzemnaJednotka stringToTyp(std::string& cislo);
-	void vypisTypyUJ();
-	void vypisTabulkuPodlaTypu(structures::SortedSequenceTable<std::string,
-		UzemnaJednotka*>& tab, TypUzemnaJednotka typ);
-	void vypisBodoveUJ(UzemnaJednotka* uj, bool vypisKritVzPocet, bool vypisKritVzPodiel);
-	void vypisFilterUJ(UzemnaJednotka* uj, bool vypisKritVzPocet, bool vypisKritVzPodiel, Vzdelanie vzdelaniePocet, Vzdelanie vzdelaniePodiel);
-	std::string typToString(TypUzemnaJednotka typ);
-	void vypisKriteriaVsetkoVzdelanie(UzemnaJednotka* uzemna, bool vypisKritVzPocet, bool vypisKritVzPodiel);
-	int typToCodeSize(TypUzemnaJednotka typ);
-	void vypisCeluTabulku(structures::SortedSequenceTable<std::string, UzemnaJednotka*>& tab);
-	void vypisVsetkyOperacie();
+	
+	
+	
 	void vypisCisloVsetkyFiltre();
 	void vypisCisloVzdelania();
+	void vypisCisloEVS();
+	void vypisVsetkyOperacie();
+	void vypisTypyUJ();
+	void trieditAko();
+
+	std::string typToString(TypUzemnaJednotka typ);
+	TypUzemnaJednotka stringToTyp(std::string& vstup);
+	int typToCodeSize(TypUzemnaJednotka typ);
+
 	void vyhodnotParametreVzdelaniePocet(const std::string& vzdelanie, std::string& min, std::string& max,
 		int& ivzdelanie, int& imin, int& imax);
 	void vyhodnotParametreVzdelaniePodiel(const std::string& vzdelanie, std::string& min, std::string& max,
 		int& ivzdelanie, double& dmin, double& dmax);
 
+	void vyhodnotParametreEVSPodiel(const std::string& evs,std::string& min, std::string& max,
+		int& devs, double& dmin,double& dmax);
+	void vyhodnotParametreEVSPocet(const std::string& evs, std::string& min, std::string& max,
+		int& ievs, int& imin,int& imax);
 
-	void vypisKonkretneVzdelanie(UzemnaJednotka* uzemna, bool vypisKritVzPocet,
-		bool vypisKritVzPodiel, Vzdelanie vzdelaniePocet, Vzdelanie vzdelaniePodiel);
+	void vypisTabulkuPodlaTypu(structures::SortedSequenceTable<std::string,
+		UzemnaJednotka*>& tab, TypUzemnaJednotka typ);
+
+	void vypisBodoveUJ(UzemnaJednotka* uj);
+	void vypisNazovATyp(UzemnaJednotka* uj,bool vypisTyp);
+	void vypisNadradeneUJ(UzemnaJednotka* uj, bool typ);
+
+	void vypisFilterUJBezFiltra(UzemnaJednotka* uj);
+	void vypisFilterUJVzPocet(UzemnaJednotka* uj, Vzdelanie vzdelaniePocet);
+	void vypisFilterUJVzPodiel(UzemnaJednotka* uj, Vzdelanie vzdelaniePodiel);
+	void vypisFilterUJEVSPocet(UzemnaJednotka* uj, EVS evsPocet);
+	void vypisFilterUJEVSPodiel(UzemnaJednotka* uj, EVS evsPodiel);
+
+	void vypisKritVzdelaniePocetVsetko(UzemnaJednotka* uzemna);
+	void vypisKritVekovaSkupinaPocetVsetko(UzemnaJednotka* uzemna);
+
+	void vypisVsetkyNazvy(structures::SortedSequenceTable<std::string, UzemnaJednotka*>& tab);
+
 
 };
 

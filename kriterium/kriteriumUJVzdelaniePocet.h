@@ -6,7 +6,7 @@ class KriteriumUJVzdelaniePocet : public KriteriumUJ<int>
 private:
 	Vzdelanie vzdelanie_;
 public:
-	KriteriumUJVzdelaniePocet(const Vzdelanie vzdelanie)
+	explicit KriteriumUJVzdelaniePocet(const Vzdelanie vzdelanie)
 		: vzdelanie_{vzdelanie}
 	{
 	}

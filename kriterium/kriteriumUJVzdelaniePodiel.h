@@ -7,7 +7,7 @@ class KriteriumUJVzdelaniePodiel : public KriteriumUJ<double>
 private:
 	Vzdelanie vzdelanie_;
 public:
-	KriteriumUJVzdelaniePodiel(const Vzdelanie vzdelanie)
+	explicit KriteriumUJVzdelaniePodiel(const Vzdelanie vzdelanie)
 		: vzdelanie_{ vzdelanie }
 	{
 	}

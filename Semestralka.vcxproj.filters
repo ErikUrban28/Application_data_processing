@@ -233,5 +233,20 @@
     <ClInclude Include="filter\filterPrislusnost.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="kriterium\kriteriumUJVekovaSkupinaPocet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kriterium\kriteriumUJVekovaSkupinaPodiel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kriterium\kriteriumUJNadradena.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filter\filterUJVekovaSkupinaPocet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filter\filterUJVekovaSkupinaPodiel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -7,14 +7,14 @@ public:
 	bool pass(O obj) override;
 	void vyfiltruj(structures::SortedSequenceTable<std::string, UzemnaJednotka*>& table,
 		structures::UnsortedSequenceTable<std::string, UzemnaJednotka*>& newTable) override;
-	Filter_AND();
-	Filter_AND(Filter_AND& other);
+	Filter_AND() = default;
+	Filter_AND(const ZlozenyFilter<UzemnaJednotka*>& other);
 };
 
 template<typename O>
 inline bool Filter_AND<O>::pass(O obj)
 {
-	if(ZlozenyFilter<O>::filtre_.size() == 0)
+	if (ZlozenyFilter<O>::filtre_.size() == 0)
 	{
 		return true;
 	}
@@ -41,24 +41,14 @@ void Filter_AND<O>::vyfiltruj(structures::SortedSequenceTable<std::string, Uzemn
 		}
 
 	}
-	/*
-	for (auto filter : ZlozenyFilter<O>::filtre_)
-	{
-		delete filter;
-	}*/
-	ZlozenyFilter<O>::filtre_.clear();
 
 }
 
 template <typename O>
-Filter_AND<O>::Filter_AND()
+Filter_AND<O>::Filter_AND(const ZlozenyFilter<UzemnaJednotka*>& other)
 {
-	
-}
-
-template <typename O>
-Filter_AND<O>::Filter_AND(Filter_AND& other)
-{
-	ZlozenyFilter<O>::filtre_.clear();
-	ZlozenyFilter<O>::filtre_.assign(other);
+	if (this != &other) {
+		ZlozenyFilter<O>::filtre_.assign(other.filtre_);
+	}
+	return *this;
 }

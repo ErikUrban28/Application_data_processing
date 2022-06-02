@@ -5,5 +5,6 @@ class Handler
 {
 public:
 	void spusti();
+	
 };
 

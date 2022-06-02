@@ -12,7 +12,6 @@ namespace structures
 	template <typename K, typename T, typename V>
 	class QuickSortUJ : public Sort<K, T>
 	{
-	private:
 		void quick(UnsortedSequenceTable<K, T>& table, int min, int max, Kriterium<T, V>& kriterium, bool vzostupne);
 	public:
 		/// <summary> Utriedi tabulku triedenim Quick sort. </summary>

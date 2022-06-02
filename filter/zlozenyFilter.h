@@ -11,7 +11,9 @@ protected:
 public:
 	void addFilter(Filter<O>* filter);
 	size_t size() {return filtre_.size();}
-	virtual void vyfiltruj(structures::SortedSequenceTable<std::string, UzemnaJednotka*>& table, structures::UnsortedSequenceTable<std::string, UzemnaJednotka*>& newTable) = 0;
+	virtual void vyfiltruj(structures::SortedSequenceTable<std::string, UzemnaJednotka*>& table,
+		structures::UnsortedSequenceTable<std::string, UzemnaJednotka*>& newTable) = 0;
+	~ZlozenyFilter() override;
 };
 
 
@@ -20,6 +22,18 @@ inline void ZlozenyFilter<O>::addFilter(Filter<O>* filter)
 {
 	filtre_.add(filter);
 }
+
+template<typename O>
+inline ZlozenyFilter<O>::~ZlozenyFilter()
+{
+	for (auto filter : filtre_)
+	{
+		delete filter;
+	}
+}
+
+
+
 
 
  

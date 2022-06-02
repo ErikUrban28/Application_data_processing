@@ -152,6 +152,8 @@
     <ClInclude Include="filter\filterPrislusnost.h" />
     <ClInclude Include="filter\filterUJNazov.h" />
     <ClInclude Include="filter\filterUJTyp.h" />
+    <ClInclude Include="filter\filterUJVekovaSkupinaPocet.h" />
+    <ClInclude Include="filter\filterUJVekovaSkupinaPodiel.h" />
     <ClInclude Include="filter\FilterUJVzdelaniePodiel.h" />
     <ClInclude Include="filter\filterSKriteriom.h" />
     <ClInclude Include="filter\filterHodnota.h" />
@@ -160,9 +162,12 @@
     <ClInclude Include="filter\FilterUJVzdelaniePocet.h" />
     <ClInclude Include="filter\zlozenyFilter.h" />
     <ClInclude Include="handler.h" />
+    <ClInclude Include="kriterium\kriteriumUJNadradena.h" />
     <ClInclude Include="kriterium\kriteriumUJPrislusnost.h" />
     <ClInclude Include="kriterium\kriteriumUJNazov.h" />
     <ClInclude Include="kriterium\kriteriumUJTyp.h" />
+    <ClInclude Include="kriterium\kriteriumUJVekovaSkupinaPocet.h" />
+    <ClInclude Include="kriterium\kriteriumUJVekovaSkupinaPodiel.h" />
     <ClInclude Include="kriterium\kriteriumUJVzdelaniePocet.h" />
     <ClInclude Include="kriterium\kriteriumUJVzdelaniePodiel.h" />
     <ClInclude Include="structures\array\array.h" />
