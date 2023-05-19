@@ -15,4 +15,5 @@ After starting the program, the user waits for a short time for the data to be l
 <br></br>
 
 ![Screenshot1](docs/images/Screenshot1.jpg)
+<br></br>
 ![Screenshot2](docs/images/Screenshot2.jpg)
