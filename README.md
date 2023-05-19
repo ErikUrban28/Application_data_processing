@@ -11,3 +11,8 @@ After starting the program, the user waits for a short time for the data to be l
 **Triedenie** the user is asked to select first from the common filters and then further from the filters, with the criterion according to which they will be sorted. After filtering, the user is still prompted whether to sort the table ascending or descending. Then the territorial units are already listed on the console according to the selected parameters. The last operation is to exit the application, which when selected by the user exits the application.
 
 **Needs MS Visual Studio to run**
+
+<br></br>
+
+![Screenshot1](docs/images/Screenshot1.jpg)
+![Screenshot2](docs/images/Screenshot2.jpg)
